@@ -41,7 +41,8 @@ jobs:
                         ${{ runner.os }}-yarn-
             -
                 name: Install node dependencies
-                run: yarn install
+                if: steps.yarn-cache.outputs.cache-hit != 'true'
+                run: yarn
             -
                 name: run the unit tests
                 run: yarn test
@@ -53,6 +54,11 @@ jobs:
                 -
                     name: Get the code
                     uses: actions/checkout@v3
+                -
+                    name: Install Node
+                    uses: actions/setup-node@v3
+                    with:
+                        node-version: 18
                 # -
                 #     name: Get Yarn Dependency installation dir
                 #     id: get-cache-dir
@@ -76,11 +82,6 @@ jobs:
                         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
                         restore-keys: |
                             ${{ runner.os }}-yarn-
-                -
-                    name: Install Node
-                    uses: actions/setup-node@v3
-                    with:
-                        node-version: 18
                 -
                     name: Install Node dependencies
                     run: yarn install
