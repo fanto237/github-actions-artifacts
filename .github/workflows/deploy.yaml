@@ -41,6 +41,14 @@ jobs:
                 -
                     name: build the project
                     run: yarn build
+                -
+                    name: Upload the artifact (the content of the built page)
+                    uses: actions/upload-artifact@v3
+                    with:
+                        name: dist-files
+                        path: | # adding multiple paths (so file and directory) to be upload as artifact
+                            dist
+                            package.json
     deploy:
         needs: build
         runs-on: ubuntu-latest
