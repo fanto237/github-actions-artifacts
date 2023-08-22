@@ -17,6 +17,16 @@ jobs:
                 with:
                     node-version: 18
             -
+                name: Get Yarn Dependency installation dir
+                id: get-cache-dir
+                run: echo 'dir=$(yarn config get cacheFolder)' >> $GITHUB_OUTPUT
+            -
+                name: Cache dependencies
+                uses: actions/cache@v3
+                with:
+                    path: ${{ steps.get-cache-dir.outputs.dir }}
+                    key: deps-nodes-module-${{ hashFiles('**/yarn.lock') }}
+            -
                 name: Install node dependencies
                 run: yarn install
             -
@@ -30,6 +40,16 @@ jobs:
                 -
                     name: Get the code
                     uses: actions/checkout@v3
+                -
+                    name: Get Yarn Dependency installation dir
+                    id: get-cache-dir
+                    run: echo 'dir=$(yarn config get cacheFolder)' >> $GITHUB_OUTPUT
+                -
+                    name: Cache dependencies
+                    uses: actions/cache@v3
+                    with:
+                        path: ${{ steps.get-cache-dir.outputs.dir }}
+                        key: deps-nodes-module-${{ hashFiles('**/yarn.lock') }}
                 -
                     name: Install Node
                     uses: actions/setup-node@v3
