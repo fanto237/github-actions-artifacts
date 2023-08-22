@@ -46,24 +46,28 @@ jobs:
                     uses: actions/upload-artifact@v3
                     with:
                         name: dist-files
-                        path: | # adding multiple paths (so file and directory) to be upload as artifact
-                            dist
-                            package.json
+                        path: dist
+                        # path: | # adding multiple paths (so file and directory) to be upload as artifact
+                        #     dist
+                        #     package.json
     deploy:
         needs: build
         runs-on: ubuntu-latest
         steps:
             -
-                name: Get the code
-                uses: actions/checkout@v3
-            -
-                name: Install Node
-                uses: actions/setup-node@v3
+                name: Download built artifact
+                uses: actions/download-artifact@v3
                 with:
-                    node-version: 18
+                    name: dist-files
             -
-                name: Install node dependencies
-                run: yarn install
+                name: List all the content
+                run: ls > output.txt
+            -
+                name: Upload the output file
+                uses: actions/upload-artifact@v3
+                with:
+                    name: output
+                    path: output.txt
             -
                 name: Deploy to vercel
                 run: echo "The project has been deploy to vercel, uhuhu !!"
