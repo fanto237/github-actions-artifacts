@@ -1,7 +1,7 @@
 name: Deploy Project
 on:
     push:
-        branches: 
+        branches:
             - main
 
 jobs:
@@ -42,19 +42,20 @@ jobs:
                     name: build the project
                     run: yarn build
     deploy:
-            runs-on: ubuntu-latest
-            steps:
-                -
-                    name: Get the code
-                    uses: actions/checkout@v3
-                -
-                    name: Install Node
-                    uses: actions/setup-node@v3
-                    with:
-                        node-version: 18
-                -
-                    name: Install node dependencies
-                    run: yarn install
-                -
-                    name: Deploy to vercel
-                    run: echo "The project has been deploy to vercel, uhuhu !!"
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            -
+                name: Get the code
+                uses: actions/checkout@v3
+            -
+                name: Install Node
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 18
+            -
+                name: Install node dependencies
+                run: yarn install
+            -
+                name: Deploy to vercel
+                run: echo "The project has been deploy to vercel, uhuhu !!"
